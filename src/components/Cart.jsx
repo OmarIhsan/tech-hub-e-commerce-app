@@ -7,11 +7,13 @@ import {
   CardContent,
   Grid,
   Button,
-  IconButton,
   Divider
 } from '@mui/material';
 import { Add, Remove, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
+import MaterialUISwitch from './MaterialUISwitch';
+
+
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -99,23 +101,23 @@ const Cart = () => {
                 
                 <Grid size={{ xs: 12, sm: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <IconButton 
+                    <MaterialUISwitch  
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       size="small"
                     >
                       <Remove />
-                    </IconButton>
+                    </MaterialUISwitch >
                     
                     <Typography sx={{ mx: 2 }}>
                       {item.quantity}
                     </Typography>
                     
-                    <IconButton 
+                    <MaterialUISwitch  
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       size="small"
                     >
                       <Add />
-                    </IconButton>
+                    </MaterialUISwitch >
                   </Box>
                 </Grid>
                 
@@ -126,12 +128,12 @@ const Cart = () => {
                 </Grid>
                 
                 <Grid size={{ xs: 12, sm: 1 }}>
-                  <IconButton 
+                  <MaterialUISwitch  
                     onClick={() => removeItem(item.id)}
                     color="error"
                   >
                     <Delete />
-                  </IconButton>
+                  </MaterialUISwitch >
                 </Grid>
               </Grid>
             </CardContent>

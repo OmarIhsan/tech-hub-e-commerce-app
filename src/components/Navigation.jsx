@@ -5,7 +5,6 @@ import {
   Button, 
   Box,
   Badge,
-  IconButton
 } from '@mui/material';
 import { ShoppingCart, Person, Logout, DarkMode, LightMode } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router';
@@ -14,6 +13,10 @@ import { useTheme } from '../context/ThemeContext';
 import { useState, useEffect } from 'react';
 import techHubLight from '../assets/techhub-light.png';
 import techHubDark from '../assets/techhub-dark.png';
+import MaterialUISwitch from './MaterialUISwitch';
+
+
+
 
 const Navigation = () => {
   const { user, logout } = useAuth();
@@ -59,9 +62,11 @@ const Navigation = () => {
         </Box>
         
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <IconButton color="inherit" onClick={toggleDarkMode}>
-            {darkMode ? <LightMode /> : <DarkMode />}
-          </IconButton>
+          <MaterialUISwitch 
+            checked={darkMode}
+            onChange={toggleDarkMode}
+            inputProps={{ 'aria-label': 'dark mode switch' }}
+          />
           
           {user && (
             <>
