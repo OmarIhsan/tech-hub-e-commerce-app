@@ -20,11 +20,11 @@ const AppContent = () => {
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#0067a2ff',
+        main: '#a26c00ff',
         contrastText: '#000000',
       },
       secondary: {
-        main: darkMode ? '#0067a2ff' : '#80a6ccff',
+        main: darkMode ? '#a26c00ff' : '#80a6ccff',
       },
       background: {
         default: darkMode ? '#121212' : '#ffffff',
@@ -35,10 +35,10 @@ const AppContent = () => {
       MuiButton: {
         styleOverrides: {
           contained: {
-            backgroundColor: '#0067a2ff',
+            backgroundColor: '#a26c00ff',
             color: '#000000',
             '&:hover': {
-              backgroundColor: '#0067a2ff',
+              backgroundColor: '#a26c00ff',
             },
           },
         },
@@ -46,8 +46,8 @@ const AppContent = () => {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: darkMode ? '#1e1e1e' : '#0067a2ff',
-            color: darkMode ? '#0067a2ff' : '#000000',
+            backgroundColor: darkMode ? '#1e1e1e' : '#a26c00ff',
+            color: darkMode ? '#a26c00ff' : '#000000',
           },
         },
       },
