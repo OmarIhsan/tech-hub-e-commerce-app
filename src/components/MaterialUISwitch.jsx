@@ -9,7 +9,7 @@ const MaterialUISwitch = styled(({ ...props }) => (
   height: 34,
   padding: 7,
   '& .MuiSwitch-switchBase': {
-    margin: 0,
+    margin: 1,
     padding: 0,
     transform: 'translateX(6px)',
     '&.Mui-checked': {
