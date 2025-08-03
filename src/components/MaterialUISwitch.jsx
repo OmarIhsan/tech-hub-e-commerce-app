@@ -9,14 +9,14 @@ const MaterialUISwitch = styled(({ ...props }) => (
   height: 34,
   padding: 7,
   '& .MuiSwitch-switchBase': {
-    margin: 1,
+    margin: 0,
     padding: 0,
     transform: 'translateX(6px)',
     '&.Mui-checked': {
       transform: 'translateX(22px)',
       color: '#fff',
       '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        backgroundColor: theme.palette.mode === 'dark' ? '#19af78ff' : '#30c08bff',
         opacity: 1,
         border: 0,
       },
@@ -31,7 +31,7 @@ const MaterialUISwitch = styled(({ ...props }) => (
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+    backgroundColor: theme.palette.mode === 'dark' ? '#104e37ff' : '#0d291fff',
     width: 32,
     height: 32,
     '&:before': {
@@ -50,7 +50,7 @@ const MaterialUISwitch = styled(({ ...props }) => (
   },
   '& .MuiSwitch-track': {
     opacity: 1,
-    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+    backgroundColor: theme.palette.mode === 'dark' ? '#19af78ff' : '#30c08bff',
     borderRadius: 20 / 2,
   },
 }));
