@@ -15,9 +15,6 @@ import techHubLight from '../assets/techhub-light.png';
 import techHubDark from '../assets/techhub-dark.png';
 import MaterialUISwitch from './MaterialUISwitch';
 
-
-
-
 const Navigation = () => {
   const { user, logout } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
