@@ -1,16 +1,23 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
-import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
+import {
+  ThemeProvider as MUIThemeProvider,
+  createTheme,
+} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Navigation from './components/Navigation';
 import Login from './components/Login';
 import Products from './components/Products';
+import ProductDetails from './components/ProductDetails';
 import Users from './components/Users';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
+import AdminProducts from './components/AdminProducts';
+import AdminCategories from './components/AdminCategories';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import AdminRoute from './components/AdminRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const AppContent = () => {
@@ -62,46 +69,79 @@ const AppContent = () => {
           <BrowserRouter>
             <Navigation />
             <Routes>
-              <Route 
-                path="/login" 
+              <Route
+                path='/login'
                 element={
                   <PublicRoute>
-                    <ErrorBoundary fallbackMessage="There was an issue loading the login page.">
+                    <ErrorBoundary fallbackMessage='There was an issue loading the login page.'>
                       <Login />
                     </ErrorBoundary>
                   </PublicRoute>
-                } 
+                }
               />
-              <Route 
-                path="/*" 
+              <Route
+                path='/products'
                 element={
-                  <ProtectedRoute>
-                    <Routes>
-                      <Route path="/products" element={
-                        <ErrorBoundary fallbackMessage="Unable to load products. Please try again.">
-                          <Products />
-                        </ErrorBoundary>
-                      } />
-                      <Route path="/users" element={
-                        <ErrorBoundary fallbackMessage="Unable to load users. Please try again.">
-                          <Users />
-                        </ErrorBoundary>
-                      } />
-                      <Route path="/cart" element={
-                        <ErrorBoundary fallbackMessage="Unable to load cart. Please try again.">
-                          <Cart />
-                        </ErrorBoundary>
-                      } />
-                      <Route path="/checkout" element={
-                        <ErrorBoundary fallbackMessage="Unable to load checkout. Please try again.">
-                          <Checkout />
-                        </ErrorBoundary>
-                      } />
-                      <Route path="/" element={<Navigate to="/products" replace />} />
-                    </Routes>
-                  </ProtectedRoute>
-                } 
+                  <ErrorBoundary fallbackMessage='Unable to load products. Please try again.'>
+                    <Products />
+                  </ErrorBoundary>
+                }
               />
+              <Route
+                path='/products/:id'
+                element={
+                  <ErrorBoundary fallbackMessage='Unable to load product details. Please try again.'>
+                    <ProductDetails />
+                  </ErrorBoundary>
+                }
+              />
+              <Route
+                path='/cart'
+                element={
+                  <ErrorBoundary fallbackMessage='Unable to load cart. Please try again.'>
+                    <Cart />
+                  </ErrorBoundary>
+                }
+              />
+              <Route
+                path='/checkout'
+                element={
+                  <ErrorBoundary fallbackMessage='Unable to load checkout. Please try again.'>
+                    <Checkout />
+                  </ErrorBoundary>
+                }
+              />
+              <Route
+                path='/admin/users'
+                element={
+                  <AdminRoute>
+                    <ErrorBoundary fallbackMessage='Unable to load users. Please try again.'>
+                      <Users />
+                    </ErrorBoundary>
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path='/admin/products'
+                element={
+                  <AdminRoute>
+                    <ErrorBoundary fallbackMessage='Unable to load admin products. Please try again.'>
+                      <AdminProducts />
+                    </ErrorBoundary>
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path='/admin/categories'
+                element={
+                  <AdminRoute>
+                    <ErrorBoundary fallbackMessage='Unable to load admin categories. Please try again.'>
+                      <AdminCategories />
+                    </ErrorBoundary>
+                  </AdminRoute>
+                }
+              />
+              <Route path='/' element={<Navigate to='/products' replace />} />
             </Routes>
           </BrowserRouter>
         </AuthProvider>

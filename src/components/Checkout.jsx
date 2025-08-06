@@ -11,10 +11,13 @@ import {
   Alert
 } from '@mui/material';
 import { useNavigate } from 'react-router';
+import { ordersAPI } from '../api/ordersAPI';
+import { useAuth } from '../context/AuthContext';
 
 const Checkout = () => {
   const [cart, setCart] = useState([]);
   const [orderComplete, setOrderComplete] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -27,6 +30,7 @@ const Checkout = () => {
     cvv: ''
   });
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     const cartData = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -48,7 +52,7 @@ const Checkout = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     const isFormValid = Object.values(formData).every(value => value.trim() !== '');
@@ -58,12 +62,49 @@ const Checkout = () => {
       return;
     }
 
-    localStorage.removeItem('cart');
-    setOrderComplete(true);
-    
-    setTimeout(() => {
-      navigate('/products');
-    }, 3000);
+    setLoading(true);
+
+    try {
+      const orderData = {
+        customer: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          address: formData.address,
+          city: formData.city,
+          zipCode: formData.zipCode
+        },
+        items: cart.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        payment: {
+          cardNumber: formData.cardNumber,
+          expiryDate: formData.expiryDate,
+          cvv: formData.cvv
+        },
+        total: getTotalPrice()
+      };
+
+      if (user) {
+        await ordersAPI.create(orderData);
+      } else {
+        await ordersAPI.createGuest(orderData);
+      }
+      
+      localStorage.removeItem('cart');
+      setOrderComplete(true);
+      
+      setTimeout(() => {
+        navigate('/products');
+      }, 3000);
+    } catch (error) {
+      console.error('Error creating order:', error);
+      alert('There was an error processing your order. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (orderComplete) {
@@ -217,8 +258,9 @@ const Checkout = () => {
                   variant="contained"
                   size="large"
                   sx={{ mt: 3 }}
+                  disabled={loading}
                 >
-                  Complete Order
+                  {loading ? 'Processing Order...' : 'Complete Order'}
                 </Button>
               </form>
             </Paper>

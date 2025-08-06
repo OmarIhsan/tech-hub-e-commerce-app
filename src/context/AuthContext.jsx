@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import { authAPI } from '../api/authAPI';
 
 const AuthContext = createContext();
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    
+
     if (token && userData) {
       setUser(JSON.parse(userData));
     }
@@ -29,14 +29,17 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await authAPI.login({ email, password });
       const { user, access_token } = response.data.data;
-      
+
       setUser(user);
       localStorage.setItem('token', access_token);
       localStorage.setItem('user', JSON.stringify(user));
-      
+
       return { success: true };
     } catch (error) {
-      return { success: false, error: error.response?.data?.message || error.message };
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message,
+      };
     }
   };
 
@@ -46,17 +49,18 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
+  const isAdmin = () => user?.role === 'SUPER_ADMIN';
+  const isGuest = () => !user;
+
   const value = {
     user,
     login,
     logout,
     loading,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
+    isAdmin,
+    isGuest,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

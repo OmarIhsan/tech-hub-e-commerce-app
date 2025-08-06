@@ -5,6 +5,11 @@ const api = axios.create({
   timeout: 10000,
 });
 
+const guestApi = axios.create({
+  baseURL: 'https://api.ecommerce.qafdev.com',
+  timeout: 10000,
+});
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -32,4 +37,5 @@ api.interceptors.response.use(
   }
 );
 
+export { guestApi };
 export default api;

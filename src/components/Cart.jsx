@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { 
+import {
   Container,
   Typography,
   Box,
@@ -8,11 +8,11 @@ import {
   Grid,
   Button,
   IconButton,
-  Divider
+  Divider,
 } from '@mui/material';
 import { Add, Remove, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
-import { cartAPI } from '../services/api';
+import { cartAPI } from '../api/cartAPI';
 import { CartSkeleton } from './SkeletonLoader';
 
 const Cart = () => {
@@ -46,7 +46,7 @@ const Cart = () => {
 
     try {
       await cartAPI.update(id, newQuantity);
-      const updatedCart = cart.map(item =>
+      const updatedCart = cart.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       );
       setCart(updatedCart);
@@ -54,7 +54,7 @@ const Cart = () => {
     } catch (error) {
       console.error('Error updating cart:', error);
       // Fallback to localStorage only
-      const updatedCart = cart.map(item =>
+      const updatedCart = cart.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       );
       setCart(updatedCart);
@@ -65,13 +65,13 @@ const Cart = () => {
   const removeItem = async (id) => {
     try {
       await cartAPI.remove(id);
-      const updatedCart = cart.filter(item => item.id !== id);
+      const updatedCart = cart.filter((item) => item.id !== id);
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     } catch (error) {
       console.error('Error removing item:', error);
       // Fallback to localStorage only
-      const updatedCart = cart.filter(item => item.id !== id);
+      const updatedCart = cart.filter((item) => item.id !== id);
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
@@ -91,7 +91,7 @@ const Cart = () => {
   };
 
   const getTotalPrice = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const getTotalItems = () => {
@@ -104,13 +104,13 @@ const Cart = () => {
 
   if (cart.length === 0) {
     return (
-      <Container maxWidth="md">
+      <Container maxWidth='md'>
         <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant='h4' gutterBottom>
             Your Cart is Empty
           </Typography>
-          <Button 
-            variant="contained" 
+          <Button
+            variant='contained'
             onClick={() => navigate('/products')}
             sx={{ mt: 2 }}
           >
@@ -122,58 +122,51 @@ const Cart = () => {
   }
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth='md'>
       <Box sx={{ my: 4 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant='h4' gutterBottom>
           Shopping Cart ({getTotalItems()} items)
         </Typography>
 
         {cart.map((item) => (
           <Card key={item.id} sx={{ mb: 2 }}>
             <CardContent>
-              <Grid container spacing={2} alignItems="center">
+              <Grid container spacing={2} alignItems='center'>
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="h6">
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant='h6'>{item.title}</Typography>
+                  <Typography variant='body2' color='text.secondary'>
                     ${item.price} each
                   </Typography>
                 </Grid>
-                
+
                 <Grid size={{ xs: 12, sm: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <IconButton 
+                    <IconButton
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      size="small"
+                      size='small'
                     >
                       <Remove />
                     </IconButton>
-                    
-                    <Typography sx={{ mx: 2 }}>
-                      {item.quantity}
-                    </Typography>
-                    
-                    <IconButton 
+
+                    <Typography sx={{ mx: 2 }}>{item.quantity}</Typography>
+
+                    <IconButton
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      size="small"
+                      size='small'
                     >
                       <Add />
                     </IconButton>
                   </Box>
                 </Grid>
-                
+
                 <Grid size={{ xs: 12, sm: 2 }}>
-                  <Typography variant="h6">
+                  <Typography variant='h6'>
                     ${(item.price * item.quantity).toFixed(2)}
                   </Typography>
                 </Grid>
-                
+
                 <Grid size={{ xs: 12, sm: 1 }}>
-                  <IconButton 
-                    onClick={() => removeItem(item.id)}
-                    color="error"
-                  >
+                  <IconButton onClick={() => removeItem(item.id)} color='error'>
                     <Delete />
                   </IconButton>
                 </Grid>
@@ -183,25 +176,25 @@ const Cart = () => {
         ))}
 
         <Divider sx={{ my: 3 }} />
-        
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h5">
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 3,
+          }}
+        >
+          <Typography variant='h5'>
             Total: ${getTotalPrice().toFixed(2)}
           </Typography>
-          
+
           <Box>
-            <Button 
-              variant="outlined" 
-              onClick={clearCart}
-              sx={{ mr: 2 }}
-            >
+            <Button variant='outlined' onClick={clearCart} sx={{ mr: 2 }}>
               Clear Cart
             </Button>
-            
-            <Button 
-              variant="contained" 
-              onClick={() => navigate('/checkout')}
-            >
+
+            <Button variant='contained' onClick={() => navigate('/checkout')}>
               Proceed to Checkout
             </Button>
           </Box>
